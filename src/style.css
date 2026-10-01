@@ -209,3 +209,26 @@ body {
   margin: 0;
   font-size: 1.125rem;
 }
+
+.leaderboard {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.leaderboard th,
+.leaderboard td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgb(43 45 66 / 15%);
+  text-align: left;
+}
+
+.leaderboard th {
+  border-bottom: 2px solid var(--color-ink);
+  font-weight: 700;
+}
+
+.leaderboard tbody tr:first-child td {
+  color: var(--color-suit-2);
+  font-weight: 700;
+}

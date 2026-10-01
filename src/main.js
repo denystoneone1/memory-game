@@ -1,6 +1,7 @@
 import "./style.css";
 import { el } from "./dom.js";
 import { createGame, PAIRS_TOTAL } from "./game.js";
+import { createLeaderboardContent, saveResult } from "./leaderboard.js";
 import { createModal } from "./modal.js";
 
 const newGameButton = el("button", {
@@ -47,8 +48,18 @@ function pluralizeMoves(count) {
 }
 
 const victoryModal = createModal();
+const leaderboardModal = createModal();
 
-function showVictory({ moves }) {
+function showLeaderboard() {
+  leaderboardModal.open({
+    heading: "Таблица лидеров",
+    content: [createLeaderboardContent()],
+  });
+}
+
+// onWin fires once per game, so the result is saved exactly once
+function handleWin({ moves }) {
+  saveResult(moves);
   victoryModal.open({
     heading: "Победа!",
     content: [
@@ -60,7 +71,9 @@ function showVictory({ moves }) {
   });
 }
 
-const game = createGame({ onChange: renderStats, onWin: showVictory });
+const game = createGame({ onChange: renderStats, onWin: handleWin });
+
+leaderboardButton.addEventListener("click", showLeaderboard);
 
 document.body.append(
   header,
