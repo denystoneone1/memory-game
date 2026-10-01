@@ -1,0 +1,158 @@
+:root {
+  --color-table: #eae6e1;
+  --color-face: #fafafa;
+  --color-back: #b8c1ec;
+  --color-suit-1: #d4a373;
+  --color-suit-2: #606c38;
+  --color-ink: #2b2d42;
+  --radius: 10px;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  color: var(--color-ink);
+  background-color: var(--color-table);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-table);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.header__title {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.button {
+  padding: 10px 16px;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius);
+  background-color: transparent;
+  color: var(--color-ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button--primary {
+  background-color: var(--color-suit-1);
+}
+
+.button:focus-visible,
+.card:focus-visible {
+  outline: 3px solid var(--color-suit-2);
+  outline-offset: 2px;
+}
+
+.main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+}
+
+.stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  font-size: 1.125rem;
+}
+
+.stats__item {
+  margin: 0;
+}
+
+.stats__value {
+  font-weight: 700;
+}
+
+.stats__value--pairs {
+  color: var(--color-suit-2);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(6px, 2vw, 12px);
+}
+
+.card {
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  perspective: 800px;
+}
+
+.card__inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.card--open .card__inner {
+  transform: rotateY(180deg);
+}
+
+.card__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.card__face--back {
+  background-color: var(--color-back);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgb(43 45 66 / 12%) 0 4px,
+    transparent 4px 12px
+  );
+}
+
+.card__face--front {
+  padding: 10%;
+  background-color: var(--color-face);
+  transform: rotateY(180deg);
+}
+
+.card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
