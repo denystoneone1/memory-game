@@ -3,6 +3,7 @@ import { el } from "./dom.js";
 import { shuffle } from "./shuffle.js";
 
 export const PAIRS_TOTAL = TILES.length;
+const MISMATCH_DELAY = 1000;
 
 const CLOSED_LABEL = "Закрытая карточка";
 
@@ -48,19 +49,24 @@ export function createGame({ onChange }) {
   let opened = [];
   let moves = 0;
   let pairs = 0;
+  let isLocked = false;
 
   function notify() {
     onChange({ moves, pairs });
   }
 
-  function handleCardClick(card) {
-    if (card.isOpen || card.isMatched) return;
-
-    // mismatched pair from the previous move is closed by the next click
-    if (opened.length === 2) {
+  // while a mismatched pair is visible the board ignores clicks
+  function closeMismatched() {
+    isLocked = true;
+    setTimeout(() => {
       opened.forEach(closeCard);
       opened = [];
-    }
+      isLocked = false;
+    }, MISMATCH_DELAY);
+  }
+
+  function handleCardClick(card) {
+    if (isLocked || card.isOpen || card.isMatched) return;
 
     openCard(card);
     opened.push(card);
@@ -73,6 +79,8 @@ export function createGame({ onChange }) {
       markMatched(second);
       pairs += 1;
       opened = [];
+    } else {
+      closeMismatched();
     }
     notify();
   }
