@@ -50,6 +50,7 @@ export function createGame({ onChange, onWin }) {
   let moves = 0;
   let pairs = 0;
   let isLocked = false;
+  let closeTimerId = null;
 
   function notify() {
     onChange({ moves, pairs });
@@ -58,10 +59,11 @@ export function createGame({ onChange, onWin }) {
   // while a mismatched pair is visible the board ignores clicks
   function closeMismatched() {
     isLocked = true;
-    setTimeout(() => {
+    closeTimerId = setTimeout(() => {
       opened.forEach(closeCard);
       opened = [];
       isLocked = false;
+      closeTimerId = null;
     }, MISMATCH_DELAY);
   }
 
@@ -98,7 +100,12 @@ export function createGame({ onChange, onWin }) {
     return card;
   }
 
+  // also used as a restart: a pending mismatch timer must not touch the new board
   function start() {
+    clearTimeout(closeTimerId);
+    closeTimerId = null;
+    isLocked = false;
+
     const deck = shuffle([...TILES, ...TILES]).map(createCard);
     opened = [];
     moves = 0;

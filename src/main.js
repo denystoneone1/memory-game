@@ -60,6 +60,17 @@ function showLeaderboard() {
 // onWin fires once per game, so the result is saved exactly once
 function handleWin({ moves }) {
   saveResult(moves);
+
+  const restartButton = el("button", {
+    className: "button button--primary",
+    text: "Новая игра",
+    attrs: { type: "button" },
+  });
+  restartButton.addEventListener("click", () => {
+    victoryModal.close();
+    game.start();
+  });
+
   victoryModal.open({
     heading: "Победа!",
     content: [
@@ -68,11 +79,13 @@ function handleWin({ moves }) {
         text: `Вы нашли все пары за ${moves} ${pluralizeMoves(moves)}.`,
       }),
     ],
+    buttons: [restartButton],
   });
 }
 
 const game = createGame({ onChange: renderStats, onWin: handleWin });
 
+newGameButton.addEventListener("click", () => game.start());
 leaderboardButton.addEventListener("click", showLeaderboard);
 
 document.body.append(
