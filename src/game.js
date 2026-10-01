@@ -43,7 +43,7 @@ function markMatched(card) {
   card.element.classList.add("card--matched");
 }
 
-export function createGame({ onChange }) {
+export function createGame({ onChange, onWin }) {
   const board = el("div", { className: "board" });
 
   let opened = [];
@@ -83,6 +83,8 @@ export function createGame({ onChange }) {
       closeMismatched();
     }
     notify();
+
+    if (pairs === PAIRS_TOTAL) onWin({ moves });
   }
 
   function createCard(tile) {
